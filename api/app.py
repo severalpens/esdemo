@@ -1,6 +1,5 @@
 import os
 from dotenv import load_dotenv
-from pre_project_spikes.elastic import SearchPlayground
 from elasticsearch import Elasticsearch
 
 load_dotenv()
