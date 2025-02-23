@@ -13,27 +13,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read #This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up Python version
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v1
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Create and start virtual environment
         run: |
-          cd ./api
+          cd api
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
           zip release.zip ./* -r
+          cp release.zip ../release.zip
           cd ../
-          mv api/release.zip release.zip
-        
+
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
@@ -48,9 +46,6 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
 
     steps:
       - name: Download artifact from build job
@@ -61,18 +56,19 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_B631C7195D414F78B487BB1D6C48114A }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_9E81A2BDC7E147B3BCA1A44CBDEC7796 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_44077D84B5C04EFC9DB00FF365770F1F }}
-
       - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v3
+        uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
           app-name: 'esdemoapi'
           slot-name: 'Production'
-          
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8A4993110E8F40339436860C4E91AB1F }}
+
+      # - name: Set WEBSITES_PORT environment variable
+      #   run: |
+      #     az webapp config appsettings set --name esdemoapi --resource-group esdemoapi_group --settings WEBSITES_PORT=8000
+      
+
+      - name: Set startup command
+        run: |
+          az webapp config set --name esdemoapi --resource-group esdemoapi_group --startup-file "python app.py"

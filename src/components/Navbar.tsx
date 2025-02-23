@@ -34,8 +34,8 @@ function Navbar() {
             </NavLink>
           </div>
           <div className="p-6">
-            <NavLink className="" to="/testSWAConnection">
-              Test SWA Connection
+            <NavLink className="" to="/testAPIConnection">
+              Test API Connection
             </NavLink>
           </div>
         </div>

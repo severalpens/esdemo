@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import Freestyle from './components/freestyle/Freestyle'; // Import the 'Freestyle' component
 import SearchClientDemo from './components/searchClientDemo/SearchClientDemo';
 import SearchHybrid from './components/searchHybrid/searchHybrid';
-import TestSwaConnection from './components/testSwaConnection/TestSwaConnection';
+import TestAPIConnection from './components/testAPIConnection/TestAPIConnection';
 
 
 function App() {
@@ -26,7 +26,7 @@ return (
         <Route path="freestyle" element={<Freestyle />} /> 
         <Route path="searchClientDemo" element={<SearchClientDemo />} />
         <Route path="searchHybrid" element={<SearchHybrid />} />
-        <Route path="testSWAConnection" element={<TestSwaConnection />} />
+        <Route path="testAPIConnection" element={<TestAPIConnection />} />
       </Routes>
     </div>
   );
