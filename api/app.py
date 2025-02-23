@@ -42,5 +42,5 @@ def get_filtered_index_documents(index_name):
     objectApiResponse = client.search(index=index_name, body=request.json)
     return objectApiResponse.get('hits').get('hits')
 
-if __name__ == '__main__':
-   app.run()
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=8000)
