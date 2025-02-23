@@ -63,3 +63,11 @@ jobs:
           app-name: 'esdemoapi'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8A4993110E8F40339436860C4E91AB1F }}
+
+      # - name: Set WEBSITES_PORT environment variable
+      #   run: |
+      #     az webapp config appsettings set --name esdemoapi --resource-group esdemoapi_group --settings WEBSITES_PORT=8000
+
+      - name: Set startup command
+        run: |
+          az webapp config set --name esdemoapi --resource-group esdemoapi_group --startup-file "python app.py"
