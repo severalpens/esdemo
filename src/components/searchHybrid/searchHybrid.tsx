@@ -11,13 +11,16 @@ interface Source {
     url: string;
 }
 
+interface Hit {
+    _source: Source;
+}
+
 const URI = 'https://search-elastic-7-7-1-5-7';
 const READONLY_API_KEY = " ";
 
 const SearchHybrid = () => {
     const [query, setQuery] = useState('payment');
     const [results, setResults] = useState<Source[]>([]);
-
 
     const handleSearch = async () => {
         const response = await fetch(`${URI}/main/_search`, {
@@ -36,7 +39,7 @@ const SearchHybrid = () => {
         });
 
         const data = await response.json();
-        setResults(data.hits.hits.map((hit: any) => hit._source));
+        setResults(data.hits.hits.map((hit: Hit) => hit._source));
     };
 
     return (
