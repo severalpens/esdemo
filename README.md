@@ -17,3 +17,6 @@ To build and run the Docker container for this Vite React.js application, follow
     ```
 
 3. Open your browser and navigate to `http://localhost:5000` to see the application.
+
+
+https://learn.microsoft.com/en-us/azure/static-web-apps/add-api?tabs=react
