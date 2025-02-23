@@ -27,6 +27,13 @@ def hello():
        print('Request for hello page received with no name or blank name -- redirecting')
        return redirect(url_for('index'))
 
+@app.route('/getstring', methods=['GET'])
+def getstring():
+       return "Here is the string you requested"
+
+@app.route('/getjson', methods=['GET'])
+def getjson():
+       return {"key": "value"}
 
 if __name__ == '__main__':
    app.run()
