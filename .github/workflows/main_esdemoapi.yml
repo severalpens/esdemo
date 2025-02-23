@@ -67,6 +67,7 @@ jobs:
       # - name: Set WEBSITES_PORT environment variable
       #   run: |
       #     az webapp config appsettings set --name esdemoapi --resource-group esdemoapi_group --settings WEBSITES_PORT=8000
+      
 
       - name: Set startup command
         run: |
