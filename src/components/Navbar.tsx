@@ -33,6 +33,11 @@ function Navbar() {
               Full Text Search
             </NavLink>
           </div>
+          <div className="p-6">
+            <NavLink className="" to="/testSWAConnection">
+              Test SWA Connection
+            </NavLink>
+          </div>
         </div>
       </div>
     </>
