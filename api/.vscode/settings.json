@@ -1,4 +1,0 @@
-{
-    "appService.defaultWebAppToDeploy": "undefined/subscriptions/435bb690-5521-4db0-95f1-885404e3ac92/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/espythonapi",
-    "appService.deploySubpath": "."
-}
