@@ -1,27 +1,16 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-// const apiuri = 'http://127.0.0.1:5000';
-const apiuri = 'https://esdemoapi.azurewebsites.net';
+import  { useState, useEffect } from 'react';
 
-const TestAPIConnection: React.FC = () => {
-    const [result, setResult] = useState<string>('');
+function App() {
+  const [data, setData] = useState('');
 
-    const callAPI = async () => {
-        try {
-            const response = await axios.get(apiuri + '/getstring');
-            setResult(response.data);
-        } catch (error) {
-            console.error('Error calling API', error);
-            setResult('Error calling API');
-        }
-    };
+  useEffect(() => {
+    (async function () {
+      const { text } = await( await fetch(`/api/message`)).json();
+      setData(text);
+    })();
+  });
 
-    return (
-        <div>
-            <button onClick={callAPI}>Call API</button>
-            {result && <p>Result: {result}</p>}
-        </div>
-    );
-};
+  return <div>{data}</div>;
+}
 
-export default TestAPIConnection;
+export default App;
