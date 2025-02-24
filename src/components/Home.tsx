@@ -30,13 +30,13 @@ function Home() {
             <h2 className="text-2xl font-bold mb-4">Layers</h2>
             <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
               <li className="mb-2">
-                <a href="https://gray-smoke-064726800.4.azurestaticapps.net/">
-                  Next.js Client (https://gray-smoke-064726800.4.azurestaticapps.net/)
+                <a href="https://happy-bush-0ab015800.6.azurestaticapps.net/">
+                  Next.js Client (https://happy-bush-0ab015800.6.azurestaticapps.net/)
                 </a>
               </li>
               <li className="mb-2">
-                <a href="https://api.yellowbush-3996721f.centralus.azurecontainerapps.io"                >
-                  Python Flask API (https://api.yellowbush-3996721f.centralus.azurecontainerapps.io)
+                <a href="esresearchapi.azurewebsites.net">
+                  Python Flask API (https://esresearchapi.azurewebsites.net)
                 </a>
               </li>
               <li className="mb-2">

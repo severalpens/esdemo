@@ -4,7 +4,7 @@ import axios from 'axios';
 const uri = "https://esdemoapi.azurewebsites.net";
 
 function TestAPIConnection() {
-    const [data, setData] = useState('');
+    const [data, setData] = useState([]);
 
     const getData = async () => {
         try {
@@ -24,7 +24,11 @@ function TestAPIConnection() {
                 Get Data
             </button>
             <div className="mt-4 p-2 border rounded bg-gray-100">
-                {data}
+                {data.map((item, index) => (
+                    <div key={index} className="mb-2 p-2 border rounded bg-white">
+                        <pre>{JSON.stringify(item, null, 2)}</pre>
+                    </div>
+                ))}
             </div>
         </div>
     );
