@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
+const uri = process.env.NEXT_PUBLIC_API_URL || "https://esdemoapi.azurewebsites.net";
 
-function App() {
+function TestAPIConnection() {
     const [data, setData] = useState('');
 
     useEffect(() => {
-        (async function () {
-            const raw = await fetch(`/api/http_trigger?name=paul`);
+        const getData = async () => {
+            const raw = await fetch(`${uri}/search`);
             const text = await raw.text();
             setData(text);
-        })();
+        };
+
+        getData();
     });
 
     return <div>{data}</div>;
 }
 
-export default App;
+export default TestAPIConnection;
