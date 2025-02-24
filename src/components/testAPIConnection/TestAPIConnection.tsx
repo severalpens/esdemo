@@ -1,5 +1,5 @@
 import { useState } from 'react';
-const uri = import.meta.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const uri = import.meta.env.NEXT_PUBLIC_API_URL || "https://esdemoapi.azurewebsites.net";
 
 function TestAPIConnection() {
     const [data, setData] = useState('');
