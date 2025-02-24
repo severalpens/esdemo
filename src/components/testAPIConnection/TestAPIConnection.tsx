@@ -1,19 +1,19 @@
 import { useState } from 'react';
-// const uri = import.meta.env.NEXT_PUBLIC_API_URL || "https://esdemoapi.azurewebsites.net";
-const uri =  "https://esdemoapi.azurewebsites.net";
+import axios from 'axios';
+
+const uri = "https://esdemoapi.azurewebsites.net";
 
 function TestAPIConnection() {
     const [data, setData] = useState('');
 
     const getData = async () => {
-        const raw = await fetch(`${uri}/search`);
-        const text = await raw.text();
-        setData(text);
+        try {
+            const response = await axios.get(`${uri}/search`);
+            setData(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     };
-
-    // useEffect(() => {
-    //     getData();
-    // }, []);
 
     return (
         <div className="p-4">
