@@ -1,6 +1,7 @@
+# https://learn.microsoft.com/en-us/azure/static-web-apps/add-api?tabs=react
+
 import azure.functions as func
 import logging
-
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
 @app.route(route="http_trigger")

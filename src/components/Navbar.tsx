@@ -18,12 +18,17 @@ function Navbar() {
               Home
             </NavLink>
           </div>
+          <div className="p-6">
+            <NavLink className="" to="/testAPIConnection">
+              Test API Connection
+            </NavLink>
+          </div>
           <div className="p-6" hidden>
             <NavLink className="" to="/searchClientDemo">
               Client Demo
             </NavLink>
           </div>
-          <div className="p-6" hidden>
+          <div className="p-6">
             <NavLink className="" to="/searchHybrid">
               Hybrid Search
             </NavLink>
@@ -31,11 +36,6 @@ function Navbar() {
           <div className="p-6" hidden>
             <NavLink className="" to="/searchFullText">
               Full Text Search
-            </NavLink>
-          </div>
-          <div className="p-6">
-            <NavLink className="" to="/testAPIConnection">
-              Test API Connection
             </NavLink>
           </div>
         </div>

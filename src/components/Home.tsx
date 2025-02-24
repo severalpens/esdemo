@@ -51,7 +51,7 @@ function Home() {
               </li>
             </ol>
           </div>
-          <div>
+          <div hidden>
             <h2 className="text-2xl font-bold mb-4">Repos</h2>
             <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
               <li className="mb-2">
@@ -78,11 +78,11 @@ function Home() {
             <h2 className="text-2xl font-bold mb-4">Demo Source Files</h2>
             <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
               <li className="mb-2">
-              <NavLink to="/main.json">
-            main.json 
-          </NavLink>
-          - An extract from &apos;main&apos; index in Elasticsearch.
-          </li>
+                <a href="/main.json" target="_blank" rel="noopener noreferrer">
+                  main.json
+                </a>
+                - An extract from 'main' index in Elasticsearch.
+              </li>
             </ol>
           </div>
 
