@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 const uri = import.meta.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 function TestAPIConnection() {
