@@ -18,17 +18,17 @@ function Navbar() {
               Home
             </NavLink>
           </div>
-          <div className="p-6">
+          <div className="p-6" hidden>
             <NavLink className="" to="/searchClientDemo">
               Client Demo
             </NavLink>
           </div>
-          <div className="p-6">
+          <div className="p-6" hidden>
             <NavLink className="" to="/searchHybrid">
               Hybrid Search
             </NavLink>
           </div>
-          <div className="p-6">
+          <div className="p-6" hidden>
             <NavLink className="" to="/searchFullText">
               Full Text Search
             </NavLink>

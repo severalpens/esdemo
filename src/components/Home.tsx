@@ -9,7 +9,7 @@ function Home() {
             <h1 className="text-4xl font-bold text-center sm:text-left">Elasticsearch Research</h1>
             <p className="text-center sm:text-left"></p>
           </div>
-          <div>
+          <div hidden>
             <h2 className="text-2xl font-bold mb-4">Routes</h2>
             <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
             <li className="mb-2">

@@ -1,20 +1,32 @@
 import { useState, useEffect } from 'react';
-const uri = process.env.NEXT_PUBLIC_API_URL || "https://esdemoapi.azurewebsites.net";
+const uri = import.meta.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 function TestAPIConnection() {
     const [data, setData] = useState('');
 
-    useEffect(() => {
-        const getData = async () => {
-            const raw = await fetch(`${uri}/search`);
-            const text = await raw.text();
-            setData(text);
-        };
+    const getData = async () => {
+        const raw = await fetch(`${uri}/search`);
+        const text = await raw.text();
+        setData(text);
+    };
 
-        getData();
-    });
+    // useEffect(() => {
+    //     getData();
+    // }, []);
 
-    return <div>{data}</div>;
+    return (
+        <div className="p-4">
+            <button 
+                onClick={getData} 
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
+                Get Data
+            </button>
+            <div className="mt-4 p-2 border rounded bg-gray-100">
+                {data}
+            </div>
+        </div>
+    );
 }
 
 export default TestAPIConnection;
