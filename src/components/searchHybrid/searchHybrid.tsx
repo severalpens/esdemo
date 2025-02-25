@@ -1,8 +1,8 @@
 import {  useState } from 'react';
 import axios from 'axios';
 
-const elasticsearchProxyUri = "https://esdemoapi.azurewebsites.net";
-// const elasticsearchProxyUri = "http://localhost:5000";
+// const elasticsearchProxyUri = import.meta.env.VITE_API_URL || 'https://esdemoapi.azurewebsites.net';
+const elasticsearchProxyUri = '/api';
 
 interface Document {
   _id: string;
@@ -21,18 +21,6 @@ interface Document {
   }
 }
 
-// interface Source {
-//       answer: string;
-//       channel: string;
-//       created_date: string;
-//       result_type: string;
-//       suggest: string;
-//       summary: string;
-//       title: string;
-//       url: string;
-//   }
-
-
 
 export default  function SearchClientDemo() {
     const [docs,setDocs ] = useState<Document[]>([]);
@@ -42,9 +30,11 @@ export default  function SearchClientDemo() {
 
     const filterSearch =async (eTargetValue: string) => {
         setSearchTerm(eTargetValue);
-        const response = await axios.get(`${elasticsearchProxyUri}/search`, {
-            params: {
-                q: eTargetValue,
+        const response = await axios.post(`${elasticsearchProxyUri}/search`, {
+            query: {
+                match: {
+                    title: eTargetValue,
+                },
             },
         });
         console.log(response.data);
@@ -57,12 +47,6 @@ export default  function SearchClientDemo() {
             return;
         }
 
-        if(filteredDocuments.length === 0) {
-            setResultText(`Found ${filteredDocuments.length} results. -> Start semantic search using '${searchTerm}  and return the results here.`);
-        }
-        else {
-            setResultText(`Found ${filteredDocuments.length} results but none selected. -> Start semantic search using '${searchTerm}' and return the results here.`);
-        }
         
     };
 

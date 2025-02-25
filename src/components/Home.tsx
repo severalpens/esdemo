@@ -30,8 +30,8 @@ function Home() {
             <h2 className="text-2xl font-bold mb-4">Layers</h2>
             <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
               <li className="mb-2">
-                <a href="https://happy-bush-0ab015800.6.azurestaticapps.net/">
-                  Next.js Client (https://happy-bush-0ab015800.6.azurestaticapps.net/)
+                <a href={import.meta.env.BASE_URL}>
+                  Next.js Client ({import.meta.env.BASE_URL})
                 </a>
               </li>
               <li className="mb-2">
