@@ -7,6 +7,7 @@ import Freestyle from './components/freestyle/Freestyle'; // Import the 'Freesty
 import SearchClientDemo from './components/searchClientDemo/SearchClientDemo';
 import SearchHybrid from './components/searchHybrid/searchHybrid';
 import TestAPIConnection from './components/testAPIConnection/TestAPIConnection';
+import SearchFullText from './components/searchFullText/SearchFullText';
 
 
 function App() {
@@ -27,6 +28,7 @@ return (
         <Route path="searchClientDemo" element={<SearchClientDemo />} />
         <Route path="searchHybrid" element={<SearchHybrid />} />
         <Route path="testAPIConnection" element={<TestAPIConnection />} />
+        <Route path="searchFullText" element={<SearchFullText />} />
       </Routes>
     </div>
   );

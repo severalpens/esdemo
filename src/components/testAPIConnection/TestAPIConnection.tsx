@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const uri = "https://esdemoapi.azurewebsites.net";
+const uri = import.meta.env.VITE_API_URL || 'https://notsominapi.azurewebsites.net';
 
 function TestAPIConnection() {
     const [data, setData] = useState([]);

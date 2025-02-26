@@ -23,7 +23,7 @@ interface Document {
 }
 
 
-export default  function SearchClientDemo() {
+export default  function SearchFullText() {
     const [docs,setDocs ] = useState<Document[]>([]);
     const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>('');

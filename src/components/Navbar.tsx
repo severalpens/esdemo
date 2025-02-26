@@ -1,13 +1,6 @@
-import {  useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
 function Navbar() {
-
-  useEffect(() => {
-    async function fetchData() {
-    }
-    fetchData();
-  }, [])
 
   return (
     <>
@@ -18,14 +11,14 @@ function Navbar() {
               Home
             </NavLink>
           </div>
-          <div className="p-6">
+          <div className="p-6" hidden>
             <NavLink className="" to="/testAPIConnection">
               Test API Connection
             </NavLink>
           </div>
-          <div className="p-6" hidden>
+          <div className="p-6">
             <NavLink className="" to="/searchClientDemo">
-              Client Demo
+              Client-Side Search
             </NavLink>
           </div>
           <div className="p-6">
@@ -33,7 +26,7 @@ function Navbar() {
               Hybrid Search
             </NavLink>
           </div>
-          <div className="p-6" hidden>
+          <div className="p-6" >
             <NavLink className="" to="/searchFullText">
               Full Text Search
             </NavLink>
