@@ -35,8 +35,8 @@ function Home() {
                 </a>
               </li>
               <li className="mb-2">
-                <a href="esdemoapi.azurewebsites.net">
-                  Python Flask API (https://esdemoapi.azurewebsites.net)
+                <a href="notsominapi.azurewebsites.net">
+                  Node.js Express API (https://notsominapi.azurewebsites.net)
                 </a>
               </li>
               <li className="mb-2">
