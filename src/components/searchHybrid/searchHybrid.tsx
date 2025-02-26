@@ -1,8 +1,9 @@
 import {  useState } from 'react';
 import axios from 'axios';
 
-// const elasticsearchProxyUri = import.meta.env.VITE_API_URL || 'https://esdemoapi.azurewebsites.net';
-const elasticsearchProxyUri = '/api';
+const elasticsearchProxyUri = import.meta.env.VITE_API_URL || 'https://notsominapi.azurewebsites.net';
+// const elasticsearchProxyUri = import.meta.env.VITE_API_URL;
+// const elasticsearchProxyUri = '/api';
 
 interface Document {
   _id: string;
@@ -28,17 +29,24 @@ export default  function SearchClientDemo() {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [resultText, setResultText] = useState<string>('No document selected');
 
-    const filterSearch =async (eTargetValue: string) => {
+    const filterSearch = async (eTargetValue: string) => {
         setSearchTerm(eTargetValue);
-        const response = await axios.post(`${elasticsearchProxyUri}/search`, {
+        console.log('searchTerm', eTargetValue);
+        const postRequestBody = {
             query: {
-                match: {
-                    title: eTargetValue,
+                query_string: {
+                    query: eTargetValue + '*',
+                    fields: ['answer', 'title', 'summary', 'suggest'],
                 },
             },
+        };
+        console.log('postRequestBody', postRequestBody);
+        axios.post(`${elasticsearchProxyUri}/search`, postRequestBody).then((response) => {
+            console.log('response', response.data);
+            setDocs(response.data.hits.hits);
+        }).catch((error) => {
+            console.error('error', error);
         });
-        console.log(response.data);
-        setDocs(response.data);
     }
 
     const handleSearch = () => {
@@ -82,7 +90,7 @@ export default  function SearchClientDemo() {
                             onClick={() => setSelectedDocument(doc)}
                             className="cursor-pointer p-2 hover:bg-gray-100 rounded"
                         >
-                            {doc._source.title}
+                            {doc._source.title || ''}
                         </li>
                     ))}
                 </ul>
