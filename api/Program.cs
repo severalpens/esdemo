@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = FunctionsApplication.CreateBuilder(args);
 builder.Configuration.AddUserSecrets<Program>();
 
-string? connectionString = builder.Configuration.GetValue<string>("ConnectionStrings:ScbDatabase");
+string? connectionString = builder.Configuration.GetValue<string>("ScbDatabase");
 
 
 if (string.IsNullOrEmpty(connectionString))
