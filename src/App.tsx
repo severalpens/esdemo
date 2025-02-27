@@ -8,6 +8,7 @@ import SearchClientDemo from './components/searchClientDemo/SearchClientDemo';
 import SearchHybrid from './components/searchHybrid/searchHybrid';
 import TestAPIConnection from './components/testAPIConnection/TestAPIConnection';
 import SearchFullText from './components/searchFullText/SearchFullText';
+import TestFuncConnection from './components/testFuncConnection/TestFuncConnection';
 
 
 function App() {
@@ -29,6 +30,7 @@ return (
         <Route path="searchHybrid" element={<SearchHybrid />} />
         <Route path="testAPIConnection" element={<TestAPIConnection />} />
         <Route path="searchFullText" element={<SearchFullText />} />
+        <Route path="testFuncConnection" element={<TestFuncConnection />} />
       </Routes>
     </div>
   );

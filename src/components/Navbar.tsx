@@ -31,6 +31,11 @@ function Navbar() {
               Full Text Search
             </NavLink>
           </div>
+          <div className="p-6" >
+            <NavLink className="" to="/testFuncConnection">
+              Test Func Connection
+            </NavLink>
+          </div>
         </div>
       </div>
     </>

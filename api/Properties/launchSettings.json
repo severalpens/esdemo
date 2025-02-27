@@ -1,8 +1,8 @@
 {
   "profiles": {
-    "api": {
+    "FunctionApp1": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7180",
+      "commandLineArgs": "--port 7017",
       "launchBrowser": false
     }
   }
