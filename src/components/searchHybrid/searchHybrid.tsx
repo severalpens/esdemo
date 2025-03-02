@@ -41,7 +41,7 @@ export default  function SearchClientDemo() {
             },
         };
         console.log('postRequestBody', postRequestBody);
-        axios.post(`${elasticsearchProxyUri}/search`, postRequestBody).then((response) => {
+        axios.post(`${elasticsearchProxyUri}/proxysearch`, postRequestBody).then((response) => {
             console.log('response', response.data);
             setDocs(response.data.hits.hits);
         }).catch((error) => {
