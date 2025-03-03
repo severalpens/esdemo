@@ -26,7 +26,7 @@ function Home() {
               </li>
             </ol>
           </div>
-          <div>
+          <div hidden>
             <h2 className="text-2xl font-bold mb-4">Layers</h2>
             <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
               <li className="mb-2">

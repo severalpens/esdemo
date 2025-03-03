@@ -10,7 +10,7 @@ function Navbar() {
               Home
             </NavLink>
           </div>
-          <div className="p-4">
+          <div className="p-4" hidden>
             <NavLink className="" to="/searchHybrid">
               Hybrid Search
             </NavLink>
