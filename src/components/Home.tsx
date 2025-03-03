@@ -74,17 +74,7 @@ function Home() {
               </li>
             </ol>
           </div>
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Demo Source Files</h2>
-            <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-              <li className="mb-2">
-                <a href="/main.json" target="_blank" rel="noopener noreferrer">
-                  main.json
-                </a>
-                - An extract from 'main' index in Elasticsearch.
-              </li>
-            </ol>
-          </div>
+
 
         </main>
         <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
