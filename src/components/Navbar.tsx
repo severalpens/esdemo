@@ -16,6 +16,11 @@ function Navbar() {
             </NavLink>
           </div>
           <div className="p-4">
+            <NavLink className="" to="/allDocs">
+              All Docs
+            </NavLink>
+          </div>
+          <div className="p-4">
             <NavLink className="" to="/baselineSearch">
               Baseline Search
             </NavLink>

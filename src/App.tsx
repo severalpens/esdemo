@@ -11,6 +11,7 @@ import SearchFullText from './components/searchFullText/SearchFullText';
 import TestFuncConnection from './components/testFuncConnection/TestFuncConnection';
 import CompletionSuggestor from './components/completionSuggestor/CompletionSuggestor';
 import BaselineSearch from './components/baselineSearch/BaselineSearch';
+import AllDocs from './components/allDocs/AllDocs';
 
 
 function App() {
@@ -35,6 +36,7 @@ return (
         <Route path="testFuncConnection" element={<TestFuncConnection />} />
         <Route path="completionSuggestor" element={<CompletionSuggestor />} />
         <Route path="baselineSearch" element={<BaselineSearch/>} />
+        <Route path="allDocs" element={<AllDocs/>} />
       </Routes>
     </div>
   );

@@ -29,6 +29,8 @@ export default  function SearchClientDemo() {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [resultText, setResultText] = useState<string>('No document selected');
 
+    
+
     const filterSearch = async (eTargetValue: string) => {
         setSearchTerm(eTargetValue);
         console.log('searchTerm', eTargetValue);
