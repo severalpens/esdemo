@@ -1,22 +1,17 @@
 import {  useState } from 'react';
 import axios from 'axios';
+import { clearMessages } from 'aws-amplify/in-app-messaging';
 
 const elasticsearchProxyUri = import.meta.env.VITE_API_URL || 'https://notsominapi.azurewebsites.net';
 // const elasticsearchProxyUri = import.meta.env.VITE_API_URL;
 // const elasticsearchProxyUri = '/api';
 
-interface Document {
-  _id: string;
-  _ignored: Array<string>;
-  _index: string;
-  _score: number;
-  _source: {
+ interface Document {
     fragmentTitle: string;
     shortDescription: string;
     uuid: string;
     faqShortAnswer: string;
     resultType: string;
-  }
 }
 
 
@@ -33,7 +28,10 @@ export default  function SearchClientDemo() {
         console.log('searchTerm', eTargetValue);
         axios.post(`${elasticsearchProxyUri}/baseline`, query).then((response) => {
             console.log('response', response.data);
-            response.data.hits.hits ?? setDocs(response.data.hits.hits);
+
+                let tmpDocs: Document[] = response.data.hits.hits.map((doc: any) => doc._source);
+                console.log('tmpDocs', tmpDocs);
+                setDocs(tmpDocs);
         }).catch((error) => {
             console.error('error', error);
         });
@@ -86,7 +84,7 @@ export default  function SearchClientDemo() {
                             onClick={() => setSelectedDocument(doc)}
                             className="cursor-pointer p-2 hover:bg-gray-100 rounded"
                         >
-                            {doc._source.fragmentTitle || ''}
+                            {doc.fragmentTitle || ''}
                         </li>
                     ))}
                 </ul>
@@ -94,8 +92,8 @@ export default  function SearchClientDemo() {
             <div className="w-2/3 p-4">
                 {selectedDocument ? (
                     <div>
-                        <h2 className="text-2xl font-bold mb-4">{selectedDocument._source.fragmentTitle}</h2>
-                        <p>{selectedDocument._source.faqShortAnswer}</p>
+                        <h2 className="text-2xl font-bold mb-4">{selectedDocument.fragmentTitle}</h2>
+                        <p>{selectedDocument.faqShortAnswer}</p>
                     </div>
                 ) : (
                     <p>{resultText}</p>
