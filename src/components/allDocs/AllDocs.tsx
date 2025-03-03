@@ -33,6 +33,18 @@ export default function AllDocs() {
         getAllDocs();
         }, []);
 
+        const getAllDocs2 = async () => {
+            setSearchTerm('');
+            axios.get(`${elasticsearchProxyUri}/all`).then((response) => {
+                const tmpDocs: Document[] = response.data.hits.hits.map((doc: { _source: Document }) => doc._source);
+                console.log('tmpDocs', tmpDocs);
+                setDocs(tmpDocs);
+            }).catch((error) => {
+                console.error('error', error);
+            });
+        }
+
+
     const filterSearch = async (eTargetValue: string) => {
         setSearchTerm(eTargetValue);
         const query = { query: eTargetValue };
@@ -63,7 +75,8 @@ export default function AllDocs() {
 
     return (
         <div className="flex h-screen">
-            <div className="w-1/3 border-r border-gray-300 p-4">
+            <div id="left-side-div" className="w-1/3 border-r border-gray-300 p-4">
+
                 <div className="mb-4 flex items-center">
                     <input
                         type="text"
@@ -73,10 +86,11 @@ export default function AllDocs() {
                         className="w-full p-2 border border-gray-300 rounded"
                     />
                     <button
-                        onClick={() => {
+                        onClick={async () => {
                             setSearchTerm('');
                             setSelectedDocument(null);
                             setResultText('No document selected');
+                            await getAllDocs2();
                         }}
                         className="ml-2 p-2 bg-red-500 text-white rounded"
                     >
@@ -86,6 +100,7 @@ export default function AllDocs() {
                         Search
                     </button>
                 </div>
+                <div id="left-side-results-div" className="overflow-y-auto h-full">
                 <ul className="space-y-2">
                     {docs.map((doc: Document, index: number) => (
                         <li
@@ -97,6 +112,7 @@ export default function AllDocs() {
                         </li>
                     ))}
                 </ul>
+                </div>
             </div>
             <div className="w-2/3 p-4">
                 {selectedDocument ? (
