@@ -2,8 +2,6 @@ import {  useState } from 'react';
 import axios from 'axios';
 
 const elasticsearchProxyUri = import.meta.env.VITE_API_URL || 'https://notsominapi.azurewebsites.net';
-// const elasticsearchProxyUri = import.meta.env.VITE_API_URL;
-// const elasticsearchProxyUri = '/api';
 
  interface Document {
     fragmentTitle: string;
