@@ -16,8 +16,8 @@ function Navbar() {
             </NavLink>
           </div>
           <div className="p-4">
-            <NavLink className="" to="/completionSuggestor">
-              Completion Suggestor
+            <NavLink className="" to="/baselineSearch">
+              Baseline Search
             </NavLink>
           </div>
         </div>

@@ -10,6 +10,7 @@ import TestAPIConnection from './components/testAPIConnection/TestAPIConnection'
 import SearchFullText from './components/searchFullText/SearchFullText';
 import TestFuncConnection from './components/testFuncConnection/TestFuncConnection';
 import CompletionSuggestor from './components/completionSuggestor/CompletionSuggestor';
+import BaselineSearch from './components/baselineSearch/BaselineSearch';
 
 
 function App() {
@@ -33,6 +34,7 @@ return (
         <Route path="searchFullText" element={<SearchFullText />} />
         <Route path="testFuncConnection" element={<TestFuncConnection />} />
         <Route path="completionSuggestor" element={<CompletionSuggestor />} />
+        <Route path="baselineSearch" element={<BaselineSearch/>} />
       </Routes>
     </div>
   );
