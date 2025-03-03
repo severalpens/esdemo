@@ -27,11 +27,8 @@ export default  function SearchClientDemo() {
 
         console.log('searchTerm', eTargetValue);
         axios.post(`${elasticsearchProxyUri}/baseline`, query).then((response) => {
-            console.log('response', response.data);
-
-                let tmpDocs: Document[] = response.data.hits.hits.map((doc: any) => doc._source);
-                console.log('tmpDocs', tmpDocs);
-                setDocs(tmpDocs);
+            let tmpDocs: Document[] = response.data.hits.hits.map((doc: any) => doc._source);
+            setDocs(tmpDocs);
         }).catch((error) => {
             console.error('error', error);
         });
