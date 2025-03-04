@@ -141,6 +141,7 @@ export default  function BaselineSearchExtra() {
                     <button
                         onClick={() => submitAssessment()}
                         className="mt-4 p-2 bg-blue-500 text-white rounded"
+                        disabled
                     >
                         Submit
                     </button>
