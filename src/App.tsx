@@ -12,6 +12,7 @@ import TestFuncConnection from './components/testFuncConnection/TestFuncConnecti
 import CompletionSuggestor from './components/completionSuggestor/CompletionSuggestor';
 import BaselineSearch from './components/baselineSearch/BaselineSearch';
 import AllDocs from './components/allDocs/AllDocs';
+import BaselineSearchExtra from './components/baselineSearchExtra/BaselineSearchExtra';
 
 
 function App() {
@@ -37,6 +38,7 @@ return (
         <Route path="completionSuggestor" element={<CompletionSuggestor />} />
         <Route path="baselineSearch" element={<BaselineSearch/>} />
         <Route path="allDocs" element={<AllDocs/>} />
+        <Route path="baselineSearchExtra" element={<BaselineSearchExtra />} />
       </Routes>
     </div>
   );

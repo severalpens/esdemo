@@ -25,6 +25,11 @@ function Navbar() {
               Baseline Search
             </NavLink>
           </div>
+          <div className="p-4">
+            <NavLink className="" to="/baselineSearchExtra">
+              Baseline Search Extra
+            </NavLink>
+          </div>
         </div>
       </div>
     </>
