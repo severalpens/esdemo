@@ -1,5 +1,6 @@
 import {  useState } from 'react';
 import axios from 'axios';
+import RandomQuestions from '../randomQuestions/RandomQuestions';
 
 const elasticsearchProxyUri = import.meta.env.VITE_API_URL || 'https://notsominapi.azurewebsites.net';
 
@@ -9,70 +10,146 @@ const elasticsearchProxyUri = import.meta.env.VITE_API_URL || 'https://notsomina
     uuid: string;
     faqShortAnswer: string;
     resultType: string;
+    _score: number;
 }
+
 
 const resultQualityOptions = [
     'Bad - preferred answer not present',
     'Good - preferred answer is present but not result 1',
-    'Perfect - preferred answer is present and is result 1'];
+    'Perfect - preferred answer is present and is result 1'
+];
+
+const failureReasonOptions = [
+    'no_relevant_document_exists',
+'no_relevant_document_in_index',
+'es_did_not_understand'
+];
 
 
 export default  function BaselineSearchExtra() {
     const [docs,setDocs ] = useState<Document[]>([]);
     const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
-    const [searchTerm, setSearchTerm] = useState<string>('');
-    const [resultText, setResultText] = useState<string>('No document selected');
-    const [resultQuality, setResultQuality] = useState<string>('');
-    const [comments, setComments] = useState<string>('');
+    const [searchTermState, setSearchTermState] = useState<string>('');
+    const [resultTextState, setResultTextState] = useState<string>('No document selected');
+    const [resultQualityState, setResultQualityState] = useState<string>('');
+    const [failureReasonState, setFailureReasonState] = useState<string>('');
+    const [commentsState, setCommentsState] = useState<string>('');
+    const [completedAssessments, setCompletedAssessments] = useState<string[]>([]);
 
     const filterSearch = async (eTargetValue: string) => {
-        setSearchTerm(eTargetValue);
-        const query = {query: eTargetValue};
+        setSearchTermState(eTargetValue.trim());
+        const query = {query: eTargetValue.trim()};
 
         console.log('searchTerm', eTargetValue);
         axios.post(`${elasticsearchProxyUri}/baseline`, query).then((response) => {
+            console.log('response', response);
             const tmpDocs: Document[] = response.data.hits.hits.map((doc: { _source: Document }) => doc._source);
+            const tmpScores: number[] = response.data.hits.hits.map((hit: {_score: number}) => hit._score);
+            tmpDocs.forEach((doc, index) => {
+                doc._score = tmpScores[index];
+            });
             setDocs(tmpDocs);
         }).catch((error) => {
             console.error('error', error);
         });
     }
 
+    const getSelectedDocumentOptionPosition = () => {
+        if (selectedDocument) {
+            if (selectedDocument.fragmentTitle === docs[0].fragmentTitle) {
+                return 'result_1';
+            } else if (selectedDocument.fragmentTitle === docs[1].fragmentTitle) {
+                return 'result_2';
+            } else if (selectedDocument.fragmentTitle === docs[2].fragmentTitle) {
+                return 'result_3';
+            }
+        }
+        return '';
+    }
+
 
     const submitAssessment = async () => {
+        const escapeSingleQuotes = (text: string) => text ? text.replace(/'/g, "''") : '';
+
+        const search_term = searchTermState ? escapeSingleQuotes(searchTermState) : ''; 
+        const result_1_title  = docs[0].fragmentTitle ? escapeSingleQuotes(docs[0].fragmentTitle) : '';
+        const result_1_type = docs[0].resultType ? escapeSingleQuotes(docs[0].resultType) : '';
+        const result_1_short_description = docs[0].shortDescription ? escapeSingleQuotes(docs[0].shortDescription) : '';
+        const result_1_faq_short_answer = docs[0].faqShortAnswer ? escapeSingleQuotes(docs[0].faqShortAnswer) : '';
+        const result_1_es_score = docs[0]._score ? docs[0]._score : 0;
+        const result_2_title = docs[1] ? escapeSingleQuotes(docs[1].fragmentTitle) : '';
+        const result_2_type = docs[1] ? escapeSingleQuotes(docs[1].resultType) : '';
+        const result_2_short_description = docs[1] ? escapeSingleQuotes(docs[1].shortDescription) : '';
+        const result_2_faq_short_answer = docs[1] ? escapeSingleQuotes(docs[1].faqShortAnswer) : '';
+        const result_2_es_score = docs[1] ? docs[1]._score : 0;
+        const result_3_title = docs[2] ? escapeSingleQuotes(docs[2].fragmentTitle) : '';
+        const result_3_type = docs[2] ? escapeSingleQuotes(docs[2].resultType) : '';
+        const result_3_short_description = docs[2] ? escapeSingleQuotes(docs[2].shortDescription) : '';
+        const result_3_faq_short_answer = docs[2] ? escapeSingleQuotes(docs[2].faqShortAnswer) : '';
+        const result_3_es_score = docs[2] ? docs[2]._score : 0;
+        const result_quality = resultQualityState ? escapeSingleQuotes(resultQualityState) : '';
+        const preferred_answer_position = getSelectedDocumentOptionPosition();
+        const failure_reason = failureReasonState ? escapeSingleQuotes(failureReasonState) : '';
+        const comments = commentsState ? escapeSingleQuotes(commentsState) : '';
+        const sql = `insert into assessments values ('${search_term}','${result_1_title}','${result_1_type}','${result_1_short_description}','${result_1_faq_short_answer}','${result_1_es_score}','${result_2_title}','${result_2_type}','${result_2_short_description}','${result_2_faq_short_answer}','${result_2_es_score}','${result_3_title}','${result_3_type}','${result_3_short_description}','${result_3_faq_short_answer}','${result_3_es_score}','${result_quality}','${preferred_answer_position}','${failure_reason}','${comments}')`;
+        
+
         const body = {
-            input_query: searchTerm,
-            result1: docs[0] ? docs[0].fragmentTitle : '',
-            result2: docs[1] ? docs[1].fragmentTitle : '',
-            result3: docs[2] ? docs[2].fragmentTitle : '',
-            resultQuality: resultQuality, 
-            comments: comments
-        };
+            search_term,
+            result_1_title,
+            result_1_type,
+            result_1_short_description,
+            result_1_faq_short_answer,
+            result_1_es_score,
+            result_2_title,
+            result_2_type,
+            result_2_short_description,
+            result_2_faq_short_answer,
+            result_2_es_score,
+            result_3_title,
+            result_3_type,
+            result_3_short_description,
+            result_3_faq_short_answer,
+            result_3_es_score,
+            result_quality,
+            preferred_answer_position,
+            failure_reason,
+            comments, 
+            sql 
+                };
 
         axios.post(`${elasticsearchProxyUri}/submitAssessment`, body).then((response) => {
             console.log('response', response);
-            setResultText('Assessment submitted');
+            setResultTextState('Assessment submitted');
             setDocs([]);
             setSelectedDocument(null);
-            setSearchTerm('');
-            setResultQuality('');
-            setComments('');
+            setSearchTermState('');
+            setResultQualityState('');
+            setCommentsState('');
         }).catch((error) => {
             console.error('error', error);
         });
+
+        axios.get(`${elasticsearchProxyUri}/getAssessments`, {}).then((response) => {
+            setCompletedAssessments(response.data.map((doc: { search_term: string }) => doc.search_term));
+        }).catch((error) => {
+            console.error('error', error);
+        });
+
     }
 
     const handleSearch = () => {
-        if (searchTerm === '') {
-            setResultText('No search term entered');
+        if (searchTermState === '') {
+            setResultTextState('No search term entered');
             return;
         }
 
         if(docs.length === 0) {
-            setResultText(`Found ${docs.length} results. -> Start semantic search using '${searchTerm}  and return the results here.`);
+            setResultTextState(`Found ${docs.length} results. -> Start semantic search using '${searchTermState}  and return the results here.`);
         }
         else {
-            setResultText(`Found ${docs.length} results but none selected. -> Start semantic search using '${searchTerm}' and return the results here.`);
+            setResultTextState(`Found ${docs.length} results but none selected. -> Start semantic search using '${searchTermState}' and return the results here.`);
         }
         
     };
@@ -83,16 +160,16 @@ export default  function BaselineSearchExtra() {
                 <div className="mb-4 flex items-center">
                     <input
                         type="text"
-                        value={searchTerm}
+                        value={searchTermState}
                         onChange={(e) => filterSearch(e.target.value)}
                         placeholder="Type eg 'payment'"
                         className="w-full p-2 border border-gray-300 rounded"
                     />
                         <button
                             onClick={() => {
-                                setSearchTerm('');
+                                setSearchTermState('');
                                 setSelectedDocument(null);
-                                setResultText('No document selected');
+                                setResultTextState('No document selected');
                             }}
                             className="ml-2 p-2 bg-red-500 text-white rounded"
                         >
@@ -118,8 +195,8 @@ export default  function BaselineSearchExtra() {
                     <div>
                         <label>Result Quality</label>
                         <select
-                            value={resultQuality}
-                            onChange={(e) => setResultQuality(e.target.value)}
+                            value={resultQualityState}
+                            onChange={(e) => setResultQualityState(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded"
                         >
                             <option value="">Select...</option>
@@ -131,17 +208,33 @@ export default  function BaselineSearchExtra() {
                         </select>
                     </div>
                     <div>
+                        <label>Failure Reason</label>
+                        <select
+                            value={failureReasonState}
+                            onChange={(e) => setFailureReasonState(e.target.value)}
+                            className="w-full p-2 border border-gray-300 rounded"
+                        >
+                            <option value="">Select...</option>
+                            {failureReasonOptions.map((option, index) => (
+                                <option key={index} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div>
                         <label>Comments</label>
                         <textarea
-                            value={comments}
-                            onChange={(e) => setComments(e.target.value)}
+                            value={commentsState}
+                            onChange={(e) => setCommentsState(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded"
                         />
                     </div>
                     <button
                         onClick={() => submitAssessment()}
                         className="mt-4 p-2 bg-blue-500 text-white rounded"
-                        disabled
+                        
                     >
                         Submit
                     </button>
@@ -154,8 +247,9 @@ export default  function BaselineSearchExtra() {
                         <p>{selectedDocument.faqShortAnswer}</p>
                     </div>
                 ) : (
-                    <p>{resultText}</p>
+                    <p>{resultTextState}</p>
                 )}
+                <RandomQuestions completedAssessments={completedAssessments} filterSearch={filterSearch} />
             </div>
         </div>
     );
