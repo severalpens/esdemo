@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from 'react';
+import  {  useEffect, useState } from 'react';
 import axios from 'axios';
 
 const elasticsearchProxyUri = import.meta.env.VITE_API_URL || 'https://notsominapi.azurewebsites.net';
@@ -32,15 +32,21 @@ export default function RandomQuestions({ completedAssessments, filterSearch }: 
 
     return (
         <div>
-        <div>
-            {expectedResult}
-        </div>
-        <div className="flex h-screen">
+        {expectedResult && 
+            <div className="my-4">
+                <div className=""><strong>Expected Result:</strong></div>
+                <p>{expectedResult}</p>
+            </div>
+        }        
+                    <div className="my-4">
+                <div className=""><strong>Random Questions:</strong></div>
+            </div>
+
+            <div className="flex h-screen">
             <table className="table-auto">
                 <thead>
                     <tr>
-                        <th>Random Questions</th>
-                        <th>Action</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>

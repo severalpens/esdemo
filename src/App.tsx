@@ -3,14 +3,7 @@ import Navbar from "./components/Navbar";
 import { Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import React, { useEffect } from 'react';
-import Freestyle from './components/freestyle/Freestyle'; // Import the 'Freestyle' component
 import SearchClientDemo from './components/searchClientDemo/SearchClientDemo';
-import SearchHybrid from './components/searchHybrid/searchHybrid';
-import TestAPIConnection from './components/testAPIConnection/TestAPIConnection';
-import SearchFullText from './components/searchFullText/SearchFullText';
-import TestFuncConnection from './components/testFuncConnection/TestFuncConnection';
-import CompletionSuggestor from './components/completionSuggestor/CompletionSuggestor';
-import BaselineSearch from './components/baselineSearch/BaselineSearch';
 import AllDocs from './components/allDocs/AllDocs';
 import BaselineSearchExtra from './components/baselineSearchExtra/BaselineSearchExtra';
 
@@ -29,14 +22,7 @@ return (
       <Navbar  />
       <Routes>
         <Route path="/" element={<Home />}/>
-        <Route path="freestyle" element={<Freestyle />} /> 
         <Route path="searchClientDemo" element={<SearchClientDemo />} />
-        <Route path="searchHybrid" element={<SearchHybrid />} />
-        <Route path="testAPIConnection" element={<TestAPIConnection />} />
-        <Route path="searchFullText" element={<SearchFullText />} />
-        <Route path="testFuncConnection" element={<TestFuncConnection />} />
-        <Route path="completionSuggestor" element={<CompletionSuggestor />} />
-        <Route path="baselineSearch" element={<BaselineSearch/>} />
         <Route path="allDocs" element={<AllDocs/>} />
         <Route path="baselineSearchExtra" element={<BaselineSearchExtra />} />
       </Routes>
