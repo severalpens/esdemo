@@ -35,6 +35,11 @@ function Navbar() {
               Assessment Results
             </NavLink>
           </div>
+          <div className="p-4">
+            <NavLink className="" to="/runTests">
+              Run Tests
+            </NavLink>
+          </div>
         </div>
       </div>
     </>
