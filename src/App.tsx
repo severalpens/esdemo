@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import SearchClientDemo from './components/searchClientDemo/SearchClientDemo';
 import AllDocs from './components/allDocs/AllDocs';
 import BaselineSearchExtra from './components/baselineSearchExtra/BaselineSearchExtra';
+import AssessmentResults from './components/assessmentResults/AssessmentResults';
 
 
 function App() {
@@ -25,6 +26,7 @@ return (
         <Route path="searchClientDemo" element={<SearchClientDemo />} />
         <Route path="allDocs" element={<AllDocs/>} />
         <Route path="baselineSearchExtra" element={<BaselineSearchExtra />} />
+        <Route path="assessmentResults" element={<AssessmentResults/>} />
       </Routes>
     </div>
   );
