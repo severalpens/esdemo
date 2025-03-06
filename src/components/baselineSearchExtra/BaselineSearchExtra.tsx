@@ -99,7 +99,7 @@ export default  function BaselineSearchExtra() {
         const result_3_faq_short_answer = docs[2] ? escapeSingleQuotes(docs[2]?.faqShortAnswer) : '';
         const result_3_es_score = docs[2] ? docs[2]?._score : 0;
         const result_quality = resultQualityState ? escapeSingleQuotes(resultQualityState) : '';
-        const preferred_answer_position = preferredAnswerPositionState;;
+        const preferred_answer_position = preferredAnswerPositionState;
         const failure_reason = failureReasonState ? escapeSingleQuotes(failureReasonState) : '';
         const comments = commentsState ? escapeSingleQuotes(commentsState) : '';
         const sql = `insert into assessments values ('${search_term}','${result_1_title}','${result_1_type}','${result_1_short_description}','${result_1_faq_short_answer}','${result_1_es_score}','${result_2_title}','${result_2_type}','${result_2_short_description}','${result_2_faq_short_answer}','${result_2_es_score}','${result_3_title}','${result_3_type}','${result_3_short_description}','${result_3_faq_short_answer}','${result_3_es_score}','${result_quality}','${preferred_answer_position}','${failure_reason}','${comments}', '${new Date().toISOString()}','${search_id}')`;

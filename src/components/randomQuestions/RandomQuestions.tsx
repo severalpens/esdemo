@@ -1,8 +1,4 @@
-import  {  useEffect, useState } from 'react';
-import axios from 'axios';
-
-const elasticsearchProxyUri = import.meta.env.VITE_API_URL || 'https://notsominapi.azurewebsites.net';
-
+import  {   useState } from 'react';
 
 interface RandomQuestionsProps {
     filterSearch:  ((rq: string) => void);
