@@ -1,4 +1,4 @@
-import {  useState } from 'react';
+import { useEffect,  useState } from 'react';
 import axios from 'axios';
 import RandomQuestions from '../randomQuestions/RandomQuestions';
 
@@ -25,7 +25,14 @@ const failureReasonOptions = [
 'no_relevant_document_in_index',
 'es_did_not_understand'
 ];
-
+interface SearchQueryTest{
+    id: string;
+    search_id: string;
+    search_term: string;
+    expected_results: string;
+    result_quality: string;
+    assessed:string;
+}
 
 export default  function BaselineSearchExtra() {
     const [docs,setDocs ] = useState<Document[]>([]);
@@ -35,7 +42,23 @@ export default  function BaselineSearchExtra() {
     const [resultQualityState, setResultQualityState] = useState<string>('');
     const [failureReasonState, setFailureReasonState] = useState<string>('');
     const [commentsState, setCommentsState] = useState<string>('');
-    const [completedAssessments, setCompletedAssessments] = useState<string[]>([]);
+    const [ ,setCompletedAssessments] = useState<string[]>([]);
+    const [preferredAnswerPositionState, setPreferredAnswerPositionState] = useState<string>('');
+    const [searchQueryTests, setSearchQueryTests] = useState<SearchQueryTest[]>([]);
+        
+    const getRandomQuestions = async () => {
+        const { data } = await  axios.get(`${elasticsearchProxyUri}/GetSearchQueryTestSet`);
+        console.log(data);
+        setSearchQueryTests(data);
+    }
+
+
+    useEffect(() => {
+        getRandomQuestions();
+    }, []);
+    
+    
+    const preferredAnswerPositionOptions = ['n/a', 'result_1', 'result_2', 'result_3','none of the above'];
 
     const filterSearch = async (eTargetValue: string) => {
         setSearchTermState(eTargetValue.trim());
@@ -55,44 +78,31 @@ export default  function BaselineSearchExtra() {
         });
     }
 
-    const getSelectedDocumentOptionPosition = () => {
-        if (selectedDocument) {
-            if (selectedDocument.fragmentTitle === docs[0].fragmentTitle) {
-                return 'result_1';
-            } else if (selectedDocument.fragmentTitle === docs[1].fragmentTitle) {
-                return 'result_2';
-            } else if (selectedDocument.fragmentTitle === docs[2].fragmentTitle) {
-                return 'result_3';
-            }
-        }
-        return '';
-    }
-
 
     const submitAssessment = async () => {
         const escapeSingleQuotes = (text: string) => text ? text.replace(/'/g, "''") : '';
-
+        const search_id = '';
         const search_term = searchTermState ? escapeSingleQuotes(searchTermState) : ''; 
-        const result_1_title  = docs[0].fragmentTitle ? escapeSingleQuotes(docs[0].fragmentTitle) : '';
-        const result_1_type = docs[0].resultType ? escapeSingleQuotes(docs[0].resultType) : '';
-        const result_1_short_description = docs[0].shortDescription ? escapeSingleQuotes(docs[0].shortDescription) : '';
-        const result_1_faq_short_answer = docs[0].faqShortAnswer ? escapeSingleQuotes(docs[0].faqShortAnswer) : '';
-        const result_1_es_score = docs[0]._score ? docs[0]._score : 0;
-        const result_2_title = docs[1] ? escapeSingleQuotes(docs[1].fragmentTitle) : '';
-        const result_2_type = docs[1] ? escapeSingleQuotes(docs[1].resultType) : '';
-        const result_2_short_description = docs[1] ? escapeSingleQuotes(docs[1].shortDescription) : '';
-        const result_2_faq_short_answer = docs[1] ? escapeSingleQuotes(docs[1].faqShortAnswer) : '';
+        const result_1_title  = docs[0]?.fragmentTitle ? escapeSingleQuotes(docs[0]?.fragmentTitle) : '';
+        const result_1_type = docs[0]?.resultType ? escapeSingleQuotes(docs[0].resultType) : '';
+        const result_1_short_description = docs[0]?.shortDescription ? escapeSingleQuotes(docs[0]?.shortDescription) : '';
+        const result_1_faq_short_answer = docs[0]?.faqShortAnswer ? escapeSingleQuotes(docs[0]?.faqShortAnswer) : '';
+        const result_1_es_score = docs[0]?._score ? docs[0]?._score : 0;
+        const result_2_title = docs[1] ? escapeSingleQuotes(docs[1]?.fragmentTitle) : '';
+        const result_2_type = docs[1] ? escapeSingleQuotes(docs[1]?.resultType) : '';
+        const result_2_short_description = docs[1] ? escapeSingleQuotes(docs[1]?.shortDescription) : '';
+        const result_2_faq_short_answer = docs[1] ? escapeSingleQuotes(docs[1]?.faqShortAnswer) : '';
         const result_2_es_score = docs[1] ? docs[1]._score : 0;
-        const result_3_title = docs[2] ? escapeSingleQuotes(docs[2].fragmentTitle) : '';
-        const result_3_type = docs[2] ? escapeSingleQuotes(docs[2].resultType) : '';
-        const result_3_short_description = docs[2] ? escapeSingleQuotes(docs[2].shortDescription) : '';
-        const result_3_faq_short_answer = docs[2] ? escapeSingleQuotes(docs[2].faqShortAnswer) : '';
-        const result_3_es_score = docs[2] ? docs[2]._score : 0;
+        const result_3_title = docs[2] ? escapeSingleQuotes(docs[2]?.fragmentTitle) : '';
+        const result_3_type = docs[2] ? escapeSingleQuotes(docs[2]?.resultType) : '';
+        const result_3_short_description = docs[2] ? escapeSingleQuotes(docs[2]?.shortDescription) : '';
+        const result_3_faq_short_answer = docs[2] ? escapeSingleQuotes(docs[2]?.faqShortAnswer) : '';
+        const result_3_es_score = docs[2] ? docs[2]?._score : 0;
         const result_quality = resultQualityState ? escapeSingleQuotes(resultQualityState) : '';
-        const preferred_answer_position = getSelectedDocumentOptionPosition();
+        const preferred_answer_position = preferredAnswerPositionState;;
         const failure_reason = failureReasonState ? escapeSingleQuotes(failureReasonState) : '';
         const comments = commentsState ? escapeSingleQuotes(commentsState) : '';
-        const sql = `insert into assessments values ('${search_term}','${result_1_title}','${result_1_type}','${result_1_short_description}','${result_1_faq_short_answer}','${result_1_es_score}','${result_2_title}','${result_2_type}','${result_2_short_description}','${result_2_faq_short_answer}','${result_2_es_score}','${result_3_title}','${result_3_type}','${result_3_short_description}','${result_3_faq_short_answer}','${result_3_es_score}','${result_quality}','${preferred_answer_position}','${failure_reason}','${comments}')`;
+        const sql = `insert into assessments values ('${search_term}','${result_1_title}','${result_1_type}','${result_1_short_description}','${result_1_faq_short_answer}','${result_1_es_score}','${result_2_title}','${result_2_type}','${result_2_short_description}','${result_2_faq_short_answer}','${result_2_es_score}','${result_3_title}','${result_3_type}','${result_3_short_description}','${result_3_faq_short_answer}','${result_3_es_score}','${result_quality}','${preferred_answer_position}','${failure_reason}','${comments}', '${new Date().toISOString()}','${search_id}')`;
         
 
         const body = {
@@ -136,6 +146,8 @@ export default  function BaselineSearchExtra() {
         }).catch((error) => {
             console.error('error', error);
         });
+
+        await getRandomQuestions();
 
     }
 
@@ -186,7 +198,7 @@ export default  function BaselineSearchExtra() {
                             onClick={() => setSelectedDocument(doc)}
                             className="cursor-pointer p-2 hover:bg-gray-100 rounded"
                         >
-                            {doc.fragmentTitle || ''}
+                            {doc?.fragmentTitle || ''}
                         </li>
                     ))}
                 </ul>
@@ -201,6 +213,21 @@ export default  function BaselineSearchExtra() {
                         >
                             <option value="">Select...</option>
                             {resultQualityOptions.map((option, index) => (
+                                <option key={index} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Preferred Answer Position</label>
+                        <select
+                            value={preferredAnswerPositionState}
+                            onChange={(e) => setPreferredAnswerPositionState(e.target.value)}
+                            className="w-full p-2 border border-gray-300 rounded"
+                        >
+                            <option value="">Select...</option>
+                            {preferredAnswerPositionOptions.map((option, index) => (
                                 <option key={index} value={option}>
                                     {option}
                                 </option>
@@ -243,13 +270,13 @@ export default  function BaselineSearchExtra() {
             <div className="w-1/3 p-4">
                 {selectedDocument ? (
                     <div>
-                        <h2 className="text-2xl font-bold mb-4">{selectedDocument.fragmentTitle}</h2>
-                        <p>{selectedDocument.faqShortAnswer}</p>
+                        <h2 className="text-2xl font-bold mb-4">{selectedDocument?.fragmentTitle}</h2>
+                        <p>{selectedDocument?.faqShortAnswer}</p>
                     </div>
                 ) : (
                     <p>{resultTextState}</p>
                 )}
-                <RandomQuestions completedAssessments={completedAssessments} filterSearch={filterSearch} />
+                <RandomQuestions searchQueryTests={searchQueryTests} filterSearch={filterSearch} getRandomQuestions={getRandomQuestions} />
             </div>
         </div>
     );

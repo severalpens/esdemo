@@ -5,41 +5,38 @@ const elasticsearchProxyUri = import.meta.env.VITE_API_URL || 'https://notsomina
 
 
 interface RandomQuestionsProps {
-    completedAssessments: string[];
     filterSearch:  ((rq: string) => void);
+    searchQueryTests: SearchQueryTest[];
+    getRandomQuestions: (() => void);
 }
 
-interface RandomQuestion{
+interface SearchQueryTest{
     id: string;
+    search_id: string;
     search_term: string;
-    expected_result: string;
+    expected_results: string;
+    result_quality: string;
+    assessed:string;
 }
 
-export default function RandomQuestions({ completedAssessments, filterSearch }: RandomQuestionsProps) {
-    const [randomQuestions, setRandomQuestions] = useState<RandomQuestion[]>([]);
-    const [ ,setSearchTerms] = useState<string[]>([]);
-    const [expectedResult, setExpectedResult] = useState<string>('');
-    useEffect(() => {
-        const getRandomQuestions = async () => {
-            const { data } = await  axios.get(`${elasticsearchProxyUri}/getRandomQuestions`);
-            console.log(data);
-            setRandomQuestions(data);
-            setSearchTerms(data.map((st: RandomQuestion) => st.search_term));
-        }
-        getRandomQuestions();
-    }
-    , []);
+export default function RandomQuestions({  filterSearch, searchQueryTests, getRandomQuestions }: RandomQuestionsProps) {
+
+    const [selectedQuery, setSelectedQuery] = useState<SearchQueryTest | null>(null);
+
 
     return (
         <div>
-        {expectedResult && 
+        {selectedQuery && 
             <div className="my-4">
                 <div className=""><strong>Expected Result:</strong></div>
-                <p>{expectedResult}</p>
+                <p>{selectedQuery.expected_results}</p>
             </div>
         }        
+            <div>
+                <button onClick={getRandomQuestions} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Refresh</button>
+            </div>
                     <div className="my-4">
-                <div className=""><strong>Random Questions:</strong></div>
+                <div className=""><strong>Random Questions (result_quality)</strong></div>
             </div>
 
             <div className="flex h-screen">
@@ -50,16 +47,18 @@ export default function RandomQuestions({ completedAssessments, filterSearch }: 
                     </tr>
                 </thead>
                 <tbody>
-                    {randomQuestions.map((rq, index) => (
+                    {searchQueryTests.map((rq, index) => (
                         <tr key={index}>
                             <td 
                                 onClick={() => { 
                                      filterSearch(rq.search_term);
-                                     setExpectedResult(rq.expected_result);
-                                    }}
-                                className={`cursor-pointer hover:bg-gray-100 ${completedAssessments.includes(rq.search_term) ? 'line-through' : ''}`}
+                                    setSelectedQuery(rq);
+                                }}
+                                className={`cursor-pointer `}
                             >
-                                {rq.search_term}
+                                <span className={rq.assessed ? 'line-through' : ''}>
+                                    {rq.search_term} ({rq.result_quality})
+                                </span>
                             </td>
                                 
                         </tr>
