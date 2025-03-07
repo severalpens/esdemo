@@ -10,26 +10,6 @@ function Navbar() {
               Home
             </NavLink>
           </div>
-          <div className="p-4" hidden>
-            <NavLink className="" to="/searchHybrid">
-              Hybrid Search
-            </NavLink>
-          </div>
-          <div className="p-4">
-            <NavLink className="" to="/allDocs">
-              All Docs
-            </NavLink>
-          </div>
-          <div className="p-4">
-            <NavLink className="" to="/baselineSearch">
-              Baseline Search
-            </NavLink>
-          </div>
-          <div className="p-4">
-            <NavLink className="" to="/baselineSearchExtra">
-              Baseline Search Extra
-            </NavLink>
-          </div>
           <div className="p-4">
             <NavLink className="" to="/assessmentResults">
               Assessment Results
