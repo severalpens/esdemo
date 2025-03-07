@@ -39,13 +39,13 @@ export default  function BaselineSearchExtra() {
     const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
     const [searchTermState, setSearchTermState] = useState<string>('');
     const [resultTextState, setResultTextState] = useState<string>('No document selected');
-    const [resultQualityState, setResultQualityState] = useState<string>('');
+    const [manualResultQualityState, setManualResultQualityState] = useState<string>('');
     const [failureReasonState, setFailureReasonState] = useState<string>('');
     const [commentsState, setCommentsState] = useState<string>('');
     const [ ,setCompletedAssessments] = useState<string[]>([]);
     const [preferredAnswerPositionState, setPreferredAnswerPositionState] = useState<string>('');
     const [searchQueryTests, setSearchQueryTests] = useState<SearchQueryTest[]>([]);
-        
+    const [isInterestingState, setIsInterestingState] = useState<string>('');
     const getRandomQuestions = async () => {
         const { data } = await  axios.get(`${elasticsearchProxyUri}/GetSearchQueryTestSet`);
         console.log(data);
@@ -67,8 +67,8 @@ export default  function BaselineSearchExtra() {
         console.log('searchTerm', eTargetValue);
         axios.post(`${elasticsearchProxyUri}/baseline`, query).then((response) => {
             console.log('response', response);
-            const tmpDocs: Document[] = response.data.hits.hits.map((doc: { _source: Document }) => doc._source);
-            const tmpScores: number[] = response.data.hits.hits.map((hit: {_score: number}) => hit._score);
+            const tmpDocs: Document[] = response.data.hits.hits ? response.data.hits.hits?.map((doc: { _source: Document }) => doc._source): [];
+            const tmpScores: number[] = response.data.hits.hits ? response.data.hits.hits?.map((hit: {_score: number}) => hit._score): [];
             tmpDocs.forEach((doc, index) => {
                 doc._score = tmpScores[index];
             });
@@ -81,7 +81,10 @@ export default  function BaselineSearchExtra() {
 
     const submitAssessment = async () => {
         const escapeSingleQuotes = (text: string) => text ? text.replace(/'/g, "''") : '';
-        const search_id = '';
+        const timestamp = new Date().toISOString();
+        const insert_date = timestamp;
+        const update_date = timestamp;
+        const testset_date = timestamp;
         const search_term = searchTermState ? escapeSingleQuotes(searchTermState) : ''; 
         const result_1_title  = docs[0]?.fragmentTitle ? escapeSingleQuotes(docs[0]?.fragmentTitle) : '';
         const result_1_type = docs[0]?.resultType ? escapeSingleQuotes(docs[0].resultType) : '';
@@ -98,11 +101,12 @@ export default  function BaselineSearchExtra() {
         const result_3_short_description = docs[2] ? escapeSingleQuotes(docs[2]?.shortDescription) : '';
         const result_3_faq_short_answer = docs[2] ? escapeSingleQuotes(docs[2]?.faqShortAnswer) : '';
         const result_3_es_score = docs[2] ? docs[2]?._score : 0;
-        const result_quality = resultQualityState ? escapeSingleQuotes(resultQualityState) : '';
+        const manual_result_quality = manualResultQualityState ? escapeSingleQuotes(manualResultQualityState) : '';
         const preferred_answer_position = preferredAnswerPositionState;
         const failure_reason = failureReasonState ? escapeSingleQuotes(failureReasonState) : '';
+        const is_interesting  = isInterestingState;
         const comments = commentsState ? escapeSingleQuotes(commentsState) : '';
-        const sql = `insert into assessments values ('${search_term}','${result_1_title}','${result_1_type}','${result_1_short_description}','${result_1_faq_short_answer}','${result_1_es_score}','${result_2_title}','${result_2_type}','${result_2_short_description}','${result_2_faq_short_answer}','${result_2_es_score}','${result_3_title}','${result_3_type}','${result_3_short_description}','${result_3_faq_short_answer}','${result_3_es_score}','${result_quality}','${preferred_answer_position}','${failure_reason}','${comments}', '${new Date().toISOString()}','${search_id}')`;
+        const sql = `insert into assessments values ('${insert_date}','${update_date}','${testset_date}','${search_term}','','${manual_result_quality}','${preferred_answer_position}','${failure_reason}','${is_interesting}','${comments}','')`;
         
 
         const body = {
@@ -122,7 +126,7 @@ export default  function BaselineSearchExtra() {
             result_3_short_description,
             result_3_faq_short_answer,
             result_3_es_score,
-            result_quality,
+            result_quality: manual_result_quality,
             preferred_answer_position,
             failure_reason,
             comments, 
@@ -135,14 +139,14 @@ export default  function BaselineSearchExtra() {
             setDocs([]);
             setSelectedDocument(null);
             setSearchTermState('');
-            setResultQualityState('');
+            setManualResultQualityState('');
             setCommentsState('');
         }).catch((error) => {
             console.error('error', error);
         });
 
         axios.get(`${elasticsearchProxyUri}/getAssessments`, {}).then((response) => {
-            setCompletedAssessments(response.data.map((doc: { search_term: string }) => doc.search_term));
+            setCompletedAssessments(response.data ? response.data.map((doc: { search_term: string }) => doc.search_term): []);
         }).catch((error) => {
             console.error('error', error);
         });
@@ -192,7 +196,7 @@ export default  function BaselineSearchExtra() {
                     </button>
                 </div>
                 <ul className="space-y-2">
-                    {docs.map((doc: Document, index: number) => (
+                    {docs?.map((doc: Document, index: number) => (
                         <li
                             key={index}
                             onClick={() => setSelectedDocument(doc)}
@@ -207,12 +211,12 @@ export default  function BaselineSearchExtra() {
                     <div>
                         <label>Result Quality</label>
                         <select
-                            value={resultQualityState}
-                            onChange={(e) => setResultQualityState(e.target.value)}
+                            value={manualResultQualityState}
+                            onChange={(e) => setManualResultQualityState(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded"
                         >
                             <option value="">Select...</option>
-                            {resultQualityOptions.map((option, index) => (
+                            {resultQualityOptions?.map((option, index) => (
                                 <option key={index} value={option}>
                                     {option}
                                 </option>
@@ -227,7 +231,7 @@ export default  function BaselineSearchExtra() {
                             className="w-full p-2 border border-gray-300 rounded"
                         >
                             <option value="">Select...</option>
-                            {preferredAnswerPositionOptions.map((option, index) => (
+                            {preferredAnswerPositionOptions?.map((option, index) => (
                                 <option key={index} value={option}>
                                     {option}
                                 </option>
@@ -242,11 +246,25 @@ export default  function BaselineSearchExtra() {
                             className="w-full p-2 border border-gray-300 rounded"
                         >
                             <option value="">Select...</option>
-                            {failureReasonOptions.map((option, index) => (
+                            {failureReasonOptions?.map((option, index) => (
                                 <option key={index} value={option}>
                                     {option}
                                 </option>
                             ))}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Is Interesting?</label>
+                        <select
+                            value={failureReasonState}
+                            onChange={(e) => setIsInterestingState(e.target.value)}
+                            className="w-full p-2 border border-gray-300 rounded"
+                        >
+                            <option value="">Select...</option>
+                            <option key='Yes' value='Yes'>Yes</option>                     
+                            <option key='No' value='No'>No</option>                     
+                 
                         </select>
                     </div>
 
