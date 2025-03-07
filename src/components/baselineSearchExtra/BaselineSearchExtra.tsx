@@ -12,6 +12,7 @@ const elasticsearchProxyUri = import.meta.env.VITE_API_URL || 'https://notsomina
     resultType: string;
     _score: number;
 }
+ 
 
 
 const resultQualityOptions = [
