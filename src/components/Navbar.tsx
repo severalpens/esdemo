@@ -11,8 +11,8 @@ function Navbar() {
             </NavLink>
           </div>
           <div className="p-4">
-            <NavLink className="" to="/assessmentResults">
-              Assessment Results
+            <NavLink className="" to="/baselineSearchExtra">
+              Assess TestSet Queries
             </NavLink>
           </div>
           <div className="p-4">
