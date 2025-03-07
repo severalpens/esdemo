@@ -1,21 +1,22 @@
 import { useState } from 'react';
-import axios from 'axios';
 
 const elasticsearchProxyUri = import.meta.env.VITE_API_URL || 'https://notsominapi.azurewebsites.net';
 
 export default function RunTests() {
     const [testState, setTestState] = useState<string>("");
 
-    const runTests = async () => {
+    const runTests = () => {
+        const eventSource = new EventSource(`${elasticsearchProxyUri}/runTests`);
+        
+        eventSource.onmessage = (event) => {
+            setTestState(prevState => prevState + '\n' + event.data);
+        };
 
-        axios.get(`${elasticsearchProxyUri}/runTests`).then((response) => {
-            setTestState(response.data)
-        }).catch((error) => {
+        eventSource.onerror = (error) => {
             console.error('error', error);
-        });
-    }
-
-
+            eventSource.close();
+        };
+    };
 
     return (
         <div>

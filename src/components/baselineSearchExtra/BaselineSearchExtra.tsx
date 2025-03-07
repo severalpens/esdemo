@@ -62,7 +62,7 @@ export default  function BaselineSearchExtra() {
     const preferredAnswerPositionOptions = ['n/a', 'result_1', 'result_2', 'result_3','none of the above'];
 
     const filterSearch = async (eTargetValue: string) => {
-        setSearchTermState(eTargetValue.trim());
+        setSearchTermState(eTargetValue);
         const query = {query: eTargetValue.trim()};
 
         console.log('searchTerm', eTargetValue);
