@@ -5,9 +5,9 @@ import Home from "./components/Home";
 import React, { useEffect } from 'react';
 import SearchClientDemo from './components/searchClientDemo/SearchClientDemo';
 import AllDocs from './components/allDocs/AllDocs';
-import BaselineSearchExtra from './components/baselineSearchExtra/BaselineSearchExtra';
+import ManualReview from './components/manualReview/ManualReview';
 import AssessmentResults from './components/assessmentResults/AssessmentResults';
-import RunTests from './components/runTests/RunTests';
+import RerunAutoTests from './components/rerunAutoTests/RerunAutoTests';
 
 
 function App() {
@@ -26,9 +26,9 @@ return (
         <Route path="/" element={<Home />}/>
         <Route path="searchClientDemo" element={<SearchClientDemo />} />
         <Route path="allDocs" element={<AllDocs/>} />
-        <Route path="baselineSearchExtra" element={<BaselineSearchExtra />} />
+        <Route path="manualReview" element={<ManualReview />} />
         <Route path="assessmentResults" element={<AssessmentResults/>} />
-        <Route path="runTests" element={<RunTests />} />
+        <Route path="rerunAutoTests" element={<RerunAutoTests />} />
       </Routes>
     </div>
   );

@@ -10,14 +10,14 @@ function Navbar() {
               Home
             </NavLink>
           </div>
-          <div className="p-4">
-            <NavLink className="" to="/baselineSearchExtra">
-              Assess TestSet Queries
+          <div className="p-4 on-hover">
+            <NavLink className="" to="/manualReview" >
+              Manual Review
             </NavLink>
           </div>
           <div className="p-4">
-            <NavLink className="" to="/runTests">
-              Run Tests
+            <NavLink className="" to="/rerunAutoTests">
+              Re-run Auto Tests
             </NavLink>
           </div>
         </div>

@@ -15,7 +15,7 @@ interface SearchQueryTest{
     assessed:string;
 }
 
-export default function RandomQuestions({  filterSearch, searchQueryTests, getRandomQuestions }: RandomQuestionsProps) {
+export default function TestSetList({  filterSearch, searchQueryTests, getRandomQuestions }: RandomQuestionsProps) {
 
     const [selectedQuery, setSelectedQuery] = useState<SearchQueryTest | null>(null);
 
