@@ -3,13 +3,13 @@ import { useState } from 'react';
 const elasticsearchProxyUri = import.meta.env.VITE_API_URL || 'https://notsominapi.azurewebsites.net';
 
 export default function RerunAutoTests() {
-    const [testState, setTestState] = useState<string>("");
+    const [testState, setTestState] = useState<string[]>([]);
 
     const runTests = () => {
         const eventSource = new EventSource(`${elasticsearchProxyUri}/regenerateAutomatedTestResults?pd=asdf`);
         
         eventSource.onmessage = (event) => {
-            setTestState(prevState => prevState + '\n' + event.data);
+            setTestState(prevState => [...prevState, event.data]);
         };
 
         eventSource.onerror = (error) => {
@@ -32,7 +32,11 @@ export default function RerunAutoTests() {
                     Run Tests
                 </button>
             </div>
-            <div>{testState || 'not yet run..'}</div>
+            <div>
+                {testState.map((test, index) => (
+                    <p key={index}>{test}</p>
+                ))}
+            </div>
         </div>
     );
 }

@@ -85,7 +85,7 @@ export default  function ManualReview() {
         const result_3_es_score = docs[2] ? docs[2]?._score : 0;
         const is_interesting  = isInterestingState;
         const comments = commentsState ? escapeSingleQuotes(commentsState) : '';
-        const sql = `insert into assessments values ('${insert_date}','${update_date}','${testset_date}','${search_term}','','','','','${is_interesting}','${comments}','')`;
+        const sql = `insert into tst.ManualReviews values ('${insert_date}','${update_date}','${testset_date}','${search_term}','${result_1_title}','${result_1_title}','${result_1_title}','${is_interesting}','${comments}')`;
         
 
         const body = {
