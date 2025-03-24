@@ -11,8 +11,8 @@ function Navbar() {
             </NavLink>
           </div>
           <div className="p-4 on-hover">
-            <NavLink className="" to="/manualReview" >
-              Manual Review
+            <NavLink className="" to="/allDocs" >
+              All
             </NavLink>
           </div>
         </div>
