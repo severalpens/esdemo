@@ -196,7 +196,7 @@ export default function ManualReview() {
                                     setSelectedQuery(rq);
                                 }}
                                 className={`cursor-pointer `}
-                            >{rq.search_term}
+                            >{`(${rq.search_id}) ${rq.search_term}`}
                             </div>
 
                         ))}
