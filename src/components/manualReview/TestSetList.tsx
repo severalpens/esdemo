@@ -1,4 +1,3 @@
-import  {   useState } from 'react';
 
 interface RandomQuestionsProps {
     filterSearch:  ((rq: string) => void);
@@ -13,7 +12,7 @@ interface SearchQueryTest{
     search_term: string;
 }
 
-export default function TestSetList({  filterSearch, searchQueryTests, getRandomQuestions, setSelectedQuery }: RandomQuestionsProps) {
+export default function TestSetList({   getRandomQuestions }: RandomQuestionsProps) {
 
 
 
