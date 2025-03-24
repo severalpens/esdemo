@@ -15,11 +15,6 @@ function Navbar() {
               Manual Review
             </NavLink>
           </div>
-          <div className="p-4">
-            <NavLink className="" to="/rerunAutoTests">
-              Re-run Auto Tests
-            </NavLink>
-          </div>
         </div>
       </div>
     </>
