@@ -301,7 +301,7 @@ const Assessment = ({ commentsState, setCommentsState, submitAssessment, setAuth
         </div>
         <div>
             <label>Comments</label>
-            <textarea
+            <textarea rows={5}
                 value={commentsState}
                 onChange={(e) => setCommentsState(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded"
