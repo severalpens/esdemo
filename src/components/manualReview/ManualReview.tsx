@@ -51,6 +51,13 @@ export default function ManualReview() {
     const [preferredOrderState, setPreferredOrderState] = useState<number[]>([]);
     const [authorState, setAuthorState] = useState<string>(() => localStorage.getItem('authorState') || '');
     const [commentsState, setCommentsState] = useState<string>('');
+    const [expectedResults, setExpectedResults] = useState<string[]>([]);
+
+    const getExpectedResults = async (search_id: string) => {
+        const { data } = await axios.get(`${elasticsearchProxyUri}/GetExpectedResults?search_id=${search_id}`);
+        const tmp = data.map((result: { expected_result: string }) => result.expected_result);
+        setExpectedResults(tmp);
+    }
 
     useEffect(() => {
         getSearchQueryTestSet();
@@ -168,6 +175,7 @@ export default function ManualReview() {
                             setIndexNameState={setIndexNameState}
                             resetForm={resetForm}
                             handleSearch={handleSearch}
+                            selectedQuery={selectedQuery}
                         />
                         <DocumentList
                             docs={docs}
@@ -189,11 +197,25 @@ export default function ManualReview() {
                         )}
                     </div>
                     <div className="w-1/3 p-4">
-                        {searchQueryTests.map((rq) => (
+                    <div>
+                {expectedResults.length > 0 && (
+                    <div>
+                        <h2 className="font-bold">Expected Results</h2>
+                        <ul>
+                            {expectedResults.map((result, index) => (
+                                <li key={index}>{result}</li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </div>
+            <h2 className="my-2 font-bold">Tests</h2>
+            {searchQueryTests.map((rq) => (
                             <div
                                 onClick={() => {
                                     filterSearch(rq.search_term);
                                     setSelectedQuery(rq);
+                                    getExpectedResults(rq.search_id);
                                 }}
                                 className={`cursor-pointer `}
                             >{`(${rq.search_id}) ${rq.search_term}`}
@@ -216,11 +238,13 @@ interface SearchBarProps {
     setIndexNameState: React.Dispatch<React.SetStateAction<string>>;
     resetForm: () => void;
     handleSearch: () => void;
+    selectedQuery: SearchQueryTest | null;
 
 }
 
-const SearchBar = ({ searchTermState, authorState, setAuthorState, filterSearch, setQueryNameState, setIndexNameState, resetForm, handleSearch }: SearchBarProps) => (
+const SearchBar = ({ searchTermState, authorState, setAuthorState, filterSearch, setQueryNameState, setIndexNameState, resetForm, handleSearch, selectedQuery }: SearchBarProps) => (
     <div className="mb-4 flex items-center">
+        <span className='mr-2'>{selectedQuery?.search_id}</span>
         <input
             type="text"
             value={searchTermState}
