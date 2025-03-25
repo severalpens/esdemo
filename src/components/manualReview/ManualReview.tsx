@@ -197,31 +197,32 @@ export default function ManualReview() {
                         )}
                     </div>
                     <div className="w-1/3 p-4">
-                    <div>
-                {expectedResults.length > 0 && (
-                    <div>
-                        <h2 className="font-bold">Expected Results</h2>
-                        <ul>
-                            {expectedResults.map((result, index) => (
-                                <li key={index}>{result}</li>
+                        <div>
+                            {expectedResults.length > 0 && (
+                                <div>
+                                    <h2 className="font-bold">Expected Results</h2>
+                                    <ul>
+                                        {expectedResults.map((result, index) => (
+                                            <li key={index}>{result}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+                        <div className="my-4 overflow-y-auto" style={{ maxHeight: '60vh' }}>
+                            <h2 className=" font-bold">Tests</h2>
+                            {searchQueryTests.map((rq) => (
+                                <div
+                                    onClick={() => {
+                                        filterSearch(rq.search_term);
+                                        setSelectedQuery(rq);
+                                        getExpectedResults(rq.search_id);
+                                    }}
+                                    className={`cursor-pointer `}
+                                >{`(${rq.search_id}) ${rq.search_term}`}
+                                </div>
                             ))}
-                        </ul>
-                    </div>
-                )}
-            </div>
-            <h2 className="my-2 font-bold">Tests</h2>
-            {searchQueryTests.map((rq) => (
-                            <div
-                                onClick={() => {
-                                    filterSearch(rq.search_term);
-                                    setSelectedQuery(rq);
-                                    getExpectedResults(rq.search_id);
-                                }}
-                                className={`cursor-pointer `}
-                            >{`(${rq.search_id}) ${rq.search_term}`}
-                            </div>
-
-                        ))}
+                        </div>
                     </div>
                 </div>
             )}
