@@ -15,6 +15,11 @@ function Navbar() {
               All
             </NavLink>
           </div>
+          <div className="p-4 on-hover">
+            <NavLink className="" to="/AssessmentResults" >
+              Asessments
+            </NavLink>
+          </div>
         </div>
       </div>
     </>
